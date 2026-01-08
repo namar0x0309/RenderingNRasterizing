@@ -220,7 +220,7 @@ function ContextCanvas(canvasName) {
         
         // Transforming Normals
         var matInvTransp = Mat4x4.Transpose(_camera.matInv); 
-        for( var i = 0; i < mesh.normals.lenght; i++ ) {
+        for( var i = 0; i < mesh.normals.length; i++ ) {
             meshTransformed.normals[i] = Mat4x4.TransformPoint( meshTransformed.normals[i], matInvTransp );
         }
             
@@ -300,7 +300,11 @@ function ContextCanvas(canvasName) {
         var delay = (thisFrameFPS - _fps) / GLOBAL.FPSFILTER; 
         _fps += delay; 
         _lastUpdate = now ; 
-        setTimeout( strFuncLoop, _fpsmsecond - delay );
+        if( typeof strFuncLoop === "function" && window.requestAnimationFrame ) {
+            window.requestAnimationFrame( strFuncLoop );
+        } else {
+            setTimeout( strFuncLoop, _fpsmsecond - delay );
+        }
     }
 
     this.DimensionsUpdate = function() {
@@ -385,7 +389,7 @@ function ContextCanvas(canvasName) {
         var vecDir = Math.Vector._2D.Difference( v2d.vertices[i[1]], v2d.vertices[i[0]] );
         
         var step = 1 / Math.Vector._2D.Magnitude( vecDir );
-        var colorInterp = ( v2d.vcolor ? v2d.vcolor[i[0]].clone() : null ); 
+        var colorInterp = ( v2d.vcolor ? v2d.vcolor[i[0]].slice() : null ); 
         for( var j = 0; j < 1; j += step ) {
         
             if( colorInterp ) {
@@ -547,7 +551,7 @@ MeshLibrary.Grid = function( size ) {
 
     // Polygon
     for( var i = 0; i < sizesquared - 2; i = i + 3 ){
-        mesh.TriangleAdd( [ j, j + 1, j + 2 ] );
+        mesh.TriangleAdd( [ i, i + 1, i + 2 ] );
     }
     
     return mesh; 

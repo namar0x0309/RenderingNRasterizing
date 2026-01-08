@@ -40,16 +40,16 @@ function SpaceMat4x4() {
     }
 
     this.MatrixGet = function () {
-        return m.clone();
+        return m.slice();
     }
 
 	this.MatrixInversetGet = function() {
 		mInv = Mat4x4.Inverse( m ); 
-		return mInv.clone();
+		return mInv.slice();
 	}
 	
     this.MatrixSet = function (mIn) {
-        m = mIn.clone();
+        m = mIn.slice();
     }
 
     this.MultiplyByMatrix = function( mIn ) {

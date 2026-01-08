@@ -21,7 +21,7 @@ Mesh3D = function () {
     }
 
 	this.VertexNormalAdd = function(vertId) {
-		_vnormals.push(new VertexNormal(vertID));
+		_vnormals.push(new VertexNormal(vertId));
 	}
 	
     this.ColorAdd = function (c) {
@@ -35,6 +35,18 @@ Mesh3D = function () {
 	this.NormalAdd = function (triID) {
 		_normals.push(new Normal(triID));
 	}
+}
+
+Mesh3D.prototype.clone = function () {
+	var mesh = new Mesh3D();
+	mesh.name = this.name;
+	mesh.vertices = this.vertices ? this.vertices.map(function (v) { return v.slice(); }) : [];
+	mesh.vnormals = this.vnormals ? this.vnormals.map(function (v) { return v.slice(); }) : [];
+	mesh.vcolor = this.vcolor ? this.vcolor.map(function (v) { return v.slice(); }) : [];
+	mesh.triangles = this.triangles ? this.triangles.map(function (t) { return t.slice(); }) : [];
+	mesh.normals = this.normals ? this.normals.map(function (n) { return n.slice(); }) : [];
+	mesh.transform = this.transform;
+	return mesh;
 }
 
 function Polygon() {
